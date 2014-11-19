@@ -14,8 +14,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.uncc.sem1.ssdi.hma.monitoring.db.DBHelper;
+import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
-import com.uncc.sem1.ssdi.hma.monitoring.domain.TargetType;
+import com.uncc.sem1.ssdi.hma.monitoring.domain.User;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Response;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Status;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.TargetResponse;
@@ -42,10 +43,10 @@ public class TargetServices {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Target target = new Target();
-				target.setUser(rs.getInt("targetId"));
+				target.setUser(new User(rs.getInt("targetId")));
 				target.setStartDate(rs.getDate("startdate"));
 				target.setEndDate(rs.getDate("enddate"));
-				target.setTargetType(TargetType.getType(rs.getInt("type")));
+				target.setTargetType(ActivityType.getType(rs.getInt("type")));
 				response.getTargets().add(target);
 			}
 		} catch (SQLException e) {
@@ -73,7 +74,7 @@ public class TargetServices {
 			ps.setInt(2, target.getTargetType().getValue());
 			ps.setDate(3, new java.sql.Date(target.getStartDate().getTime()));
 			ps.setDate(4, new java.sql.Date(target.getEndDate().getTime()));
-			ps.setInt(5, target.getUser());
+			ps.setInt(5, target.getUser().getUserid());
 			ps.executeUpdate();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

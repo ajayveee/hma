@@ -25,7 +25,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
-import com.uncc.sem1.ssdi.hma.monitoring.domain.TargetType;
+import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
+import com.uncc.sem1.ssdi.hma.monitoring.domain.User;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -67,8 +68,8 @@ public class MainActivity extends ActionBarActivity {
 		target.setCompletedPercentage(10);
 		target.setStartDate(new Date());
 		target.setEndDate(new Date());
-		target.setTargetType(TargetType.SWIMMING);
-		target.setUser(2);
+		target.setTargetType(ActivityType.SWIMMING);
+		target.setUser(new User(2));
 
 		String targetString = gson.toJson(target);
 		JSONObject jsonRequest = new JSONObject(targetString);
