@@ -9,9 +9,22 @@ public class Target {
 	private int targetId;
 	private Date startDate;
 	private Date endDate;
-	private TargetType targetType;
+	private ActivityType targetType;
 	private int completedPercentage;
-	private int userId;
+	private double calories;
+	private User user;
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public double getCalories() {
+		return calories;
+	}
+
+	public void setCalories(double calories) {
+		this.calories = calories;
+	}
 
 	public Date getStartDate() {
 		return startDate;
@@ -23,14 +36,6 @@ public class Target {
 
 	public void setTargetId(int targetId) {
 		this.targetId = targetId;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
 	}
 
 	public void setStartDate(Date startDate) {
@@ -45,11 +50,11 @@ public class Target {
 		this.endDate = endDate;
 	}
 
-	public TargetType getTargetType() {
+	public ActivityType getTargetType() {
 		return targetType;
 	}
 
-	public void setTargetType(TargetType targetType) {
+	public void setTargetType(ActivityType targetType) {
 		this.targetType = targetType;
 	}
 
@@ -61,12 +66,8 @@ public class Target {
 		this.completedPercentage = completedPercentage;
 	}
 
-	public int getUser() {
-		return userId;
-	}
-
-	public void setUser(int user) {
-		this.userId = user;
+	public User getUser() {
+		return user;
 	}
 
 }
