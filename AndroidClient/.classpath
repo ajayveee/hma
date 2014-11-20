@@ -6,7 +6,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/hma-common"/>
-	<classpathentry exported="true" kind="lib" path="E:/softwares/git/volley/bin/volley.jar"/>
-	<classpathentry exported="true" kind="lib" path="E:/softwares/gson-2.3.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
