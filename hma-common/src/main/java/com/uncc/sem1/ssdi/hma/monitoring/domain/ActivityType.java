@@ -1,21 +1,33 @@
 package com.uncc.sem1.ssdi.hma.monitoring.domain;
 
-public enum ActivityType {
-	CYCLING(0), RUNNING(1), SWIMMING(2);
-	private int value;
-
-	ActivityType(int value) {
-		this.value = value;
+public class ActivityType {
+	private int activityTypeId;
+	private int activity;
+	private double caloriesBurned;
+	public int getActivityTypeId() {
+		return activityTypeId;
 	}
-	public int getValue(){
-		return this.value;
+	public void setActivityTypeId(int activityTypeId) {
+		this.activityTypeId = activityTypeId;
 	}
-	public static ActivityType getType(int value){
-		for(ActivityType targetType : values()){
-			if(value == targetType.value){
-				return targetType;
-			}
-		}
-		return null;
+	public int getActivity() {
+		return activity;
 	}
+	public void setActivity(int activity) {
+		this.activity = activity;
+	}
+	public double getCaloriesBurned() {
+		return caloriesBurned;
+	}
+	public void setCaloriesBurned(double caloriesBurned) {
+		this.caloriesBurned = caloriesBurned;
+	}
+	public ActivityType(int activityTypeId) {
+		super();
+		this.activityTypeId = activityTypeId;
+	}
+	public ActivityType() {
+		super();
+	}
+	
 }

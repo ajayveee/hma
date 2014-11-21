@@ -68,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
 		target.setCompletedPercentage(10);
 		target.setStartDate(new Date());
 		target.setEndDate(new Date());
-		target.setTargetType(ActivityType.SWIMMING);
+		target.setActivityType(new ActivityType(1));
 		target.setUser(new User(2));
 
 		String targetString = gson.toJson(target);

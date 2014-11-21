@@ -9,7 +9,7 @@ public class Target {
 	private int targetId;
 	private Date startDate;
 	private Date endDate;
-	private ActivityType targetType;
+	private ActivityType activityType;
 	private int completedPercentage;
 	private double calories;
 	private User user;
@@ -50,12 +50,12 @@ public class Target {
 		this.endDate = endDate;
 	}
 
-	public ActivityType getTargetType() {
-		return targetType;
+	public ActivityType getActivityType() {
+		return activityType;
 	}
 
-	public void setTargetType(ActivityType targetType) {
-		this.targetType = targetType;
+	public void setActivityType(ActivityType targetType) {
+		this.activityType = targetType;
 	}
 
 	public int getCompletedPercentage() {

@@ -35,10 +35,10 @@ public class TargetServices {
 	public TargetResponse getTargets(@PathParam("param") int userid) {
 		TargetResponse response = new TargetResponse();
 		Connection conn;
-		try {
+		/*try {
 			conn = DBHelper.getInstance().getConnection();
 			PreparedStatement ps = conn
-					.prepareStatement("select * from targets where user=?");
+					.prepareStatement("select * from targets t join knownactivities ka on t.targettype where user=?");
 			ps.setInt(1, userid);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -46,13 +46,13 @@ public class TargetServices {
 				target.setUser(new User(rs.getInt("targetId")));
 				target.setStartDate(rs.getDate("startdate"));
 				target.setEndDate(rs.getDate("enddate"));
-				target.setTargetType(ActivityType.getType(rs.getInt("type")));
+				target.setActivityType(targetType);TargetType(ActivityType.getType(rs.getInt("type")));
 				response.getTargets().add(target);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		return response;
 	}
 
@@ -65,13 +65,13 @@ public class TargetServices {
 		Connection conn;
 		try {
 			conn = DBHelper.getInstance().getConnection();
-			String sql = "insert into targets (targetID, type, startdate, enddate, user) values (?,?,?,?,?)";
+			String sql = "insert into targets (targetID, activitytypeid, startdate, enddate, userid) values (?,?,?,?,?)";
 			ResultSet rs = conn.createStatement().executeQuery("SELECT targetid_seq.NEXTVAL FROM DUAL");
 			rs.next();
 			int targetID = rs.getInt(1);
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, targetID);
-			ps.setInt(2, target.getTargetType().getValue());
+			ps.setInt(2, target.getActivityType().getActivityTypeId());
 			ps.setDate(3, new java.sql.Date(target.getStartDate().getTime()));
 			ps.setDate(4, new java.sql.Date(target.getEndDate().getTime()));
 			ps.setInt(5, target.getUser().getUserid());
