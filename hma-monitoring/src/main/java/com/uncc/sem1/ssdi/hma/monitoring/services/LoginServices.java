@@ -18,6 +18,7 @@ import com.uncc.sem1.ssdi.hma.monitoring.db.DBHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.User;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Response;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Status;
+import com.uncc.sem1.ssdi.hma.monitoring.services.response.UserResponse;
 
 /**
  * All login services
@@ -32,22 +33,26 @@ public class LoginServices {
 	@GET
 	@Path("/{param}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUserDetails(@PathParam("param") String username) {
-		Response resp = new Response(username, Status.SUCCESS);
+	public UserResponse getUserDetails(@PathParam("param") String username) {
+		UserResponse resp = new UserResponse("", Status.SUCCESS);
 		Connection conn = null;
 		try {
 
 			conn = DBHelper.getInstance().getConnection();
 			PreparedStatement ps = conn
-					.prepareStatement("select * from user where name=?");
+					.prepareStatement("select * from user where username=?");
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				int age = rs.getInt("age");
-				resp.setResponseMsg("age =" + age);
+				resp.getUser().setPassword(rs.getString("PASSWORD"));
+				resp.getUser().setFirstName(rs.getString("FIRSTNAME"));
+				resp.getUser().setLastName(rs.getString("LASTNAME"));
+				resp.getUser().setDob(rs.getDate("BIRTHDAY"));
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
+			resp.setStatus(Status.FAILURE);
+			resp.setResponseMsg(e.getMessage());
 		} finally {
 			DBHelper.closeQuietly(conn);
 		}
@@ -59,7 +64,7 @@ public class LoginServices {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response signUp(User user){
 		Response response = new Response();
-		Connection conn;
+		Connection conn = null;
 		try {
 			conn = DBHelper.getInstance().getConnection();
 			String sql = "insert into user (userID, username, password, email, firstname, lastname, birthday) values (?,?,?,?,?,?,?)";
@@ -81,6 +86,8 @@ public class LoginServices {
 			e.printStackTrace();
 			response.setResponseMsg(e.getMessage());
 			response.setStatus(Status.FAILURE);
+		} finally {
+			DBHelper.closeQuietly(conn);
 		}
 		return response;
 	}

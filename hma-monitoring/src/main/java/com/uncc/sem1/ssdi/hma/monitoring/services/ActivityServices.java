@@ -24,18 +24,19 @@ import com.uncc.sem1.ssdi.hma.monitoring.services.response.Status;
 public class ActivityServices {
 
 	private static Logger logger = Logger.getLogger(ActivityServices.class);
-	
+
 	@POST
 	@Path("/set")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response setActivity(Activity activity){
+	public Response setActivity(Activity activity) {
 		Response response = new Response();
-		Connection conn;
+		Connection conn = null;
 		try {
 			conn = DBHelper.getInstance().getConnection();
 			String sql = "insert into activity (activityID, userid, activitytypeid, startdate, enddate, caloriesburned, temperature, humidity) values (?,?,?,?,?,?,?,?)";
-			ResultSet rs = conn.createStatement().executeQuery("SELECT activityid_seq.NEXTVAL FROM DUAL");
+			ResultSet rs = conn.createStatement().executeQuery(
+					"SELECT activityid_seq.NEXTVAL FROM DUAL");
 			rs.next();
 			int activityID = rs.getInt(1);
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -48,20 +49,23 @@ public class ActivityServices {
 			ps.setDouble(7, activity.getTemperature());
 			ps.setDouble(8, activity.getHumidity());
 			ps.executeUpdate();
-		}catch(Exception e){
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			response.setResponseMsg(e.getMessage());
 			response.setStatus(Status.FAILURE);
+		} finally {
+			DBHelper.closeQuietly(conn);
 		}
 		return response;
 	}
+
 	@POST
-	@Path("/set")
+	@Path("/get")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ActivityResponse getActivitiesInTimeFrame(Activity activity){
+	public ActivityResponse getActivitiesInTimeFrame(Activity activity) {
 		ActivityResponse activityResponse = new ActivityResponse();
-		Connection conn;
+		Connection conn = null;
 		try {
 			conn = DBHelper.getInstance().getConnection();
 			PreparedStatement ps = conn
@@ -82,10 +86,13 @@ public class ActivityServices {
 				activityResponse.getActivities().add(tactivity);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			activityResponse.setStatus(Status.FAILURE);
+			activityResponse.setResponseMsg(e.getMessage());
+		} finally {
+			DBHelper.closeQuietly(conn);
 		}
 		return activityResponse;
-	
+
 	}
 }

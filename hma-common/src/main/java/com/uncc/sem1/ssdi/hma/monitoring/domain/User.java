@@ -16,7 +16,16 @@ public class User {
 	private int userid;
 	private List<Activity> activities;
 	private Date dob;
+	private BiologicalProfile biologicalProfile;
 	
+	public BiologicalProfile getBiologicalProfile() {
+		return biologicalProfile;
+	}
+
+	public void setBiologicalProfile(BiologicalProfile biologicalProfile) {
+		this.biologicalProfile = biologicalProfile;
+	}
+
 	public Date getDob() {
 		return dob;
 	}

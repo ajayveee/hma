@@ -35,7 +35,7 @@ public class TargetServices {
 	@Produces(MediaType.APPLICATION_JSON)
 	public TargetResponse getTargets(@PathParam("param") String username) {
 		TargetResponse response = new TargetResponse();
-		Connection conn;
+		Connection conn = null;
 		try {
 			conn = DBHelper.getInstance().getConnection();
 			PreparedStatement ps = conn
@@ -54,8 +54,11 @@ public class TargetServices {
 				response.getTargets().add(target);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			response.setResponseMsg(e.getMessage());
+			response.setStatus(Status.FAILURE);
+		} finally {
+			DBHelper.closeQuietly(conn);
 		}
 		return response;
 	}
@@ -66,7 +69,7 @@ public class TargetServices {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response setTarget(Target target) {
 		Response response = new Response();
-		Connection conn;
+		Connection conn = null;
 		try {
 			conn = DBHelper.getInstance().getConnection();
 			String sql = "insert into targets (targetID, activitytypeid, startdate, enddate, userid, calories) values (?,?,?,?,?,?)";
@@ -87,6 +90,8 @@ public class TargetServices {
 			e.printStackTrace();
 			response.setResponseMsg(e.getMessage());
 			response.setStatus(Status.FAILURE);
+		} finally {
+			DBHelper.closeQuietly(conn);
 		}
 		return response;
 	}
