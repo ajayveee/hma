@@ -1,6 +1,6 @@
 package com.uncc.sem1.ssdi.hma.monitoring.services.response;
 
-public class Response {
+public class HMAResponse {
 	private String responseMsg;
 	private Status status = Status.SUCCESS;
 
@@ -20,11 +20,11 @@ public class Response {
 		this.status = status;
 	}
 
-	public Response() {
+	public HMAResponse() {
 		super();
 	}
 
-	public Response(String responseMsg, Status status) {
+	public HMAResponse(String responseMsg, Status status) {
 		super();
 		this.responseMsg = responseMsg;
 		this.status = status;

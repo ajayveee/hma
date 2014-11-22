@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Activity;
 
-public class ActivityResponse extends Response {
+public class ActivityResponse extends HMAResponse {
 	private List<Activity> activities;
 
 	public List<Activity> getActivities() {

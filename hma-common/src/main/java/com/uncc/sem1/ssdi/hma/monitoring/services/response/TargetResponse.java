@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
 
-public class TargetResponse extends Response {
+public class TargetResponse extends HMAResponse {
 	private List<Target> targets;
 
 	public TargetResponse() {

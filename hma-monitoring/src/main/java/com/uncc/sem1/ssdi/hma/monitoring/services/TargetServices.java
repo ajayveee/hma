@@ -17,7 +17,7 @@ import com.uncc.sem1.ssdi.hma.monitoring.db.DBHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.User;
-import com.uncc.sem1.ssdi.hma.monitoring.services.response.Response;
+import com.uncc.sem1.ssdi.hma.monitoring.services.response.HMAResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Status;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.TargetResponse;
 
@@ -67,8 +67,8 @@ public class TargetServices {
 	@Path("/set")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response setTarget(Target target) {
-		Response response = new Response();
+	public HMAResponse setTarget(Target target) {
+		HMAResponse response = new HMAResponse();
 		Connection conn = null;
 		try {
 			conn = DBHelper.getInstance().getConnection();

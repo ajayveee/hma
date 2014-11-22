@@ -2,7 +2,7 @@ package com.uncc.sem1.ssdi.hma.monitoring.services.response;
 
 import com.uncc.sem1.ssdi.hma.monitoring.domain.User;
 
-public class UserResponse extends Response {
+public class UserResponse extends HMAResponse {
 	private User user;
 
 	public User getUser() {

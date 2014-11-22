@@ -17,7 +17,7 @@ import com.uncc.sem1.ssdi.hma.monitoring.db.DBHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Activity;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.ActivityResponse;
-import com.uncc.sem1.ssdi.hma.monitoring.services.response.Response;
+import com.uncc.sem1.ssdi.hma.monitoring.services.response.HMAResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Status;
 
 @Path("activity")
@@ -29,8 +29,8 @@ public class ActivityServices {
 	@Path("/set")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response setActivity(Activity activity) {
-		Response response = new Response();
+	public HMAResponse setActivity(Activity activity) {
+		HMAResponse response = new HMAResponse();
 		Connection conn = null;
 		try {
 			conn = DBHelper.getInstance().getConnection();

@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 
 import com.uncc.sem1.ssdi.hma.monitoring.db.DBHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.User;
-import com.uncc.sem1.ssdi.hma.monitoring.services.response.Response;
+import com.uncc.sem1.ssdi.hma.monitoring.services.response.HMAResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Status;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.UserResponse;
 
@@ -62,8 +62,8 @@ public class LoginServices {
 	@Path("/set")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response signUp(User user){
-		Response response = new Response();
+	public HMAResponse signUp(User user){
+		HMAResponse response = new HMAResponse();
 		Connection conn = null;
 		try {
 			conn = DBHelper.getInstance().getConnection();
