@@ -9,8 +9,10 @@ userid number,
 
     PRIMARY KEY(userid)
 );
-insert into user values(2, 'chan','12345','chan@uncc.edu','Chanikya','Varma', {ts '2012-09-17 18:47:52.69'});
+insert into user values(((select userid_seq.nextval from dual)), 'chan','12345','chan@uncc.edu','Chanikya','Varma', {ts '2012-09-17 18:47:52.69'});
 create sequence userid_seq start with 1 increment by 1;
+create sequence targetid_seq start with 1 increment by 1;
+create sequence activityid_seq start with 1 increment by 1;
 
 CREATE TABLE Activities (
 ActivityID number,
