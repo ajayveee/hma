@@ -9,14 +9,15 @@ userid number,
 
     PRIMARY KEY(userid)
 );
+insert into user values(2, 'chan','12345','chan@uncc.edu','Chanikya','Varma', {ts '2012-09-17 18:47:52.69'});
+create sequence userid_seq start with 1 increment by 1;
 
 CREATE TABLE Activities (
 ActivityID number,
 	UserID number NOT NULL,
-	ActivityType VARCHAR(35) NOT NULL,
-	StartTime DATETIME NOT NULL,
+	ActivityTypeid number NOT NULL,
+	StartDate DATETIME NOT NULL,
 	EndTime DATETIME,
-    Duration DATETIME,
     CaloriesBurned number,
     Temperature number,
     Humidity number,

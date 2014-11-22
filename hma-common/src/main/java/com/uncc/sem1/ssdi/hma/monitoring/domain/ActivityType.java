@@ -2,7 +2,7 @@ package com.uncc.sem1.ssdi.hma.monitoring.domain;
 
 public class ActivityType {
 	private int activityTypeId;
-	private int activity;
+	private String activity;
 	private double caloriesBurned;
 	public int getActivityTypeId() {
 		return activityTypeId;
@@ -10,10 +10,10 @@ public class ActivityType {
 	public void setActivityTypeId(int activityTypeId) {
 		this.activityTypeId = activityTypeId;
 	}
-	public int getActivity() {
+	public String getActivity() {
 		return activity;
 	}
-	public void setActivity(int activity) {
+	public void setActivity(String activity) {
 		this.activity = activity;
 	}
 	public double getCaloriesBurned() {

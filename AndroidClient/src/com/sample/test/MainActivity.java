@@ -70,6 +70,7 @@ public class MainActivity extends ActionBarActivity {
 		target.setEndDate(new Date());
 		target.setActivityType(new ActivityType(1));
 		target.setUser(new User(2));
+		target.setCalories(20);
 
 		String targetString = gson.toJson(target);
 		JSONObject jsonRequest = new JSONObject(targetString);
