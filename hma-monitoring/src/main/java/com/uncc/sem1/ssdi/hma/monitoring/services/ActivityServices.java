@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -18,8 +16,7 @@ import org.apache.log4j.Logger;
 import com.uncc.sem1.ssdi.hma.monitoring.db.DBHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Activity;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
-import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
-import com.uncc.sem1.ssdi.hma.monitoring.domain.User;
+import com.uncc.sem1.ssdi.hma.monitoring.services.response.ActivityResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Response;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Status;
 
@@ -62,8 +59,8 @@ public class ActivityServices {
 	@Path("/set")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Activity> getActivitiesInTimeFrame(Activity activity){
-		List<Activity> activities = new ArrayList<Activity>();
+	public ActivityResponse getActivitiesInTimeFrame(Activity activity){
+		ActivityResponse activityResponse = new ActivityResponse();
 		Connection conn;
 		try {
 			conn = DBHelper.getInstance().getConnection();
@@ -82,13 +79,13 @@ public class ActivityServices {
 				at.setActivityTypeId(rs.getInt("ACTIVITYTYPEID"));
 				at.setActivity(rs.getString("ACTIVITYTYPE"));
 				tactivity.setActivityType(at);
-				activities.add(tactivity);
+				activityResponse.getActivities().add(tactivity);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return activities;
+		return activityResponse;
 	
 	}
 }
