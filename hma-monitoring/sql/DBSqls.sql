@@ -25,7 +25,7 @@ ActivityID number,
 	PRIMARY KEY (activityid),
 	FOREIGN KEY (Userid) REFERENCES User (userid)
 );
-
+insert into activities values((select activityid_seq.nextval from dual), 2, 1, {ts '2014-11-17 00:00:00.0'}, {ts '2014-11-17 01:00:00.0'}, 350, null, null);
 CREATE TABLE KnownActivities (
 activityTypeId number,
 	ActivityType VARCHAR(35),
