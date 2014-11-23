@@ -5,22 +5,26 @@ var userDetails;
 $(document).ready(function() {
 
 	$("#usr").text(getQueryVariable("user"));
-	fetchActivities(getQueryVariable("user"));
+	fetchUserDetail(getQueryVariable("user"));
 });
 function fetchUserDetails(username){
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		dataType : "json",
 		contentType : "application/json; charset=utf-8",
-		url : "http://localhost:8080/hma-monitoring/rest/lo/get",
-		data : JSON.stringify(activity)
+		url : "http://localhost:8080/hma-monitoring/rest/login/get?user",
+		data : username
 	// success : activitySuccess(data)
-	}).done(activitySuccess);
+	}).done(userSuccess);
 }
-function fetchActivities(username) {
+function userSuccess(data){
+	userDetails = data;
+	fetchActivities(userDetails);
+}
+function fetchActivities(userDetails) {
 	var activity = new Object();
 	activity.user = {
-		"userid" : 2
+		"userid" : userDetails.userid
 	};
 	activity.startDate = new Date(2014, 10, 15, 0, 0, 0, 0);
 	activity.endDate = new Date(2014, 10, 25, 0, 0, 0, 0);

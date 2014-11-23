@@ -25,7 +25,7 @@ public class UserResponse extends HMAResponse {
 
 	public UserResponse(String responseMsg, Status status) {
 		super(responseMsg, status);
-		// TODO Auto-generated constructor stub
+		this.user = new User();
 	}
 
 }
