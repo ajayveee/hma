@@ -2,6 +2,7 @@ package com.uncc.sem1.ssdi.hma.monitoring.db;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -26,7 +27,13 @@ public class DBHelper {
 	}
 
 	public Connection getConnection() throws SQLException {
-		return ds.getConnection();
+		return getConnection(false);
+	}
+
+	public Connection getConnection(boolean autoCommit) throws SQLException {
+		Connection connection = ds.getConnection();
+		connection.setAutoCommit(autoCommit);
+		return connection;
 	}
 
 	public static DBHelper getInstance() {
@@ -36,6 +43,32 @@ public class DBHelper {
 	public static void closeQuietly(Connection connection) {
 		try {
 			connection.close();
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	public static java.sql.Date getCurrentSQLDate() {
+		return new java.sql.Date(new Date().getTime());
+	}
+
+	public static java.sql.Date getSQLDate(Date date) {
+		return new java.sql.Date(date.getTime());
+	}
+
+	public static void rollbackQuitely(Connection connection) {
+		try {
+			if (connection != null) {
+				connection.rollback();
+			}
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	public static void commit(Connection connection) {
+		try {
+			connection.commit();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 		}

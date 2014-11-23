@@ -85,6 +85,7 @@ public class TargetServices {
 			ps.setInt(5, target.getUser().getUserid());
 			ps.setDouble(6, target.getCalories());
 			ps.executeUpdate();
+			DBHelper.commit(conn);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

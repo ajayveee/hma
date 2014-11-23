@@ -2,6 +2,9 @@ package com.uncc.sem1.ssdi.hma.monitoring.domain;
 
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BiologicalProfile {
 	private User user;
 	private Date activeFrom;
@@ -9,7 +12,6 @@ public class BiologicalProfile {
 	private Gender gender;
 	private double systolicBloodPressure;
 	private double diastolicBloodPressure;
-	private double hips;
 	private double neck;
 	private double restingHeartRate;
 	private double waist;
@@ -18,6 +20,16 @@ public class BiologicalProfile {
 	private BloodPressure bloodPressureCategory;
 	private double bodyFatPercentage;
 	private double bodyMassIndex;
+	private double height;
+	private double weight;
+	private double hip;
+	
+	public double getHip() {
+		return hip;
+	}
+	public void setHip(double hip) {
+		this.hip = hip;
+	}
 	public User getUser() {
 		return user;
 	}
@@ -53,12 +65,6 @@ public class BiologicalProfile {
 	}
 	public void setDiastolicBloodPressure(double diastolicBloodPressure) {
 		this.diastolicBloodPressure = diastolicBloodPressure;
-	}
-	public double getHips() {
-		return hips;
-	}
-	public void setHips(double hips) {
-		this.hips = hips;
 	}
 	public double getNeck() {
 		return neck;
@@ -107,6 +113,18 @@ public class BiologicalProfile {
 	}
 	public void setBodyMassIndex(double bodyMassIndex) {
 		this.bodyMassIndex = bodyMassIndex;
+	}
+	public double getHeight() {
+		return height;
+	}
+	public void setHeight(double height) {
+		this.height = height;
+	}
+	public double getWeight() {
+		return weight;
+	}
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 	
 }

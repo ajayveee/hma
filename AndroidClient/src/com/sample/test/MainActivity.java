@@ -1,5 +1,6 @@
 package com.sample.test;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,9 @@ public class MainActivity extends ActionBarActivity {
 
 		Target target = new Target();
 		target.setCompletedPercentage(10);
-		target.setStartDate(new Date());
+		Calendar calendar = Calendar.getInstance(); // this would default to now
+		calendar.add(Calendar.DAY_OF_MONTH, -5);
+		target.setStartDate(calendar.getTime());
 		target.setEndDate(new Date());
 		target.setActivityType(new ActivityType(1));
 		target.setUser(new User(2));

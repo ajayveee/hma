@@ -20,7 +20,7 @@ import com.uncc.sem1.ssdi.hma.monitoring.services.response.ActivityResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.HMAResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Status;
 
-@Path("activity")
+@Path("/activity")
 public class ActivityServices {
 
 	private static Logger logger = Logger.getLogger(ActivityServices.class);
@@ -49,6 +49,7 @@ public class ActivityServices {
 			ps.setDouble(7, activity.getTemperature());
 			ps.setDouble(8, activity.getHumidity());
 			ps.executeUpdate();
+			DBHelper.commit(conn);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			response.setResponseMsg(e.getMessage());

@@ -1,3 +1,13 @@
+Drop table user if exists;
+drop table activities if exists;
+drop table knownactivities if exists;
+drop table target if exists;
+DROP TABLE IF EXISTS BiologicalProfile;
+
+drop sequence userid_seq if exists;
+drop sequence targetid_seq if exists;
+drop sequence activityid_seq if exists;
+
 CREATE TABLE User (
 userid number,
     UserName VARCHAR (50) NOT NULL,
@@ -9,10 +19,30 @@ userid number,
 
     PRIMARY KEY(userid)
 );
-insert into user values(((select userid_seq.nextval from dual)), 'chan','12345','chan@uncc.edu','Chanikya','Varma', {ts '2012-09-17 18:47:52.69'});
+alter table user add column age number;
+
 create sequence userid_seq start with 1 increment by 1;
 create sequence targetid_seq start with 1 increment by 1;
 create sequence activityid_seq start with 1 increment by 1;
+
+insert into user values(((select userid_seq.nextval from dual)), 'chan','12345','chan@uncc.edu','Chanikya','Varma', {ts '2012-09-17 18:47:52.69'}, 25);
+
+
+CREATE TABLE BiologicalProfile (
+	Userid number NOT NULL,
+	Height number ,
+    Weight number,
+    Hip number ,
+    Neck number ,
+    Waist number ,
+    Wrist number ,
+activefrom date,
+activetill date default {ts '9999-12-31 00:00:00.0'},
+    SystolicBloodPressure number ,
+    DiastolicBloodPressure number ,
+    RestingHeartRate number ,
+	FOREIGN KEY (Userid) REFERENCES User (Userid)
+);
 
 CREATE TABLE Activities (
 ActivityID number,
@@ -27,7 +57,7 @@ ActivityID number,
 	PRIMARY KEY (activityid),
 	FOREIGN KEY (Userid) REFERENCES User (userid)
 );
-insert into activities values((select activityid_seq.nextval from dual), 2, 1, {ts '2014-11-17 00:00:00.0'}, {ts '2014-11-17 01:00:00.0'}, 350, null, null);
+insert into activities values((select activityid_seq.nextval from dual), 1, 1, {ts '2014-11-17 00:00:00.0'}, {ts '2014-11-17 01:00:00.0'}, 350, null, null);
 CREATE TABLE KnownActivities (
 activityTypeId number,
 	ActivityType VARCHAR(35),
@@ -116,3 +146,5 @@ targetid number,
 FOREIGN KEY (activitytypeid) REFERENCES knownactivities(activitytypeid)
 
 );
+
+
