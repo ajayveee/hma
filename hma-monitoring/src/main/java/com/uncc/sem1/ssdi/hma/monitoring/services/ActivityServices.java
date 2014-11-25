@@ -38,7 +38,7 @@ public class ActivityServices {
 		Connection conn = null;
 		try {
 			conn = DBHelper.getInstance().getConnection();
-			String sql = "insert into activity (activityID, userid, activitytypeid, startdate, enddate, caloriesburned, temperature, humidity) values (?,?,?,?,?,?,?,?)";
+			String sql = "insert into activities (activityID, userid, activitytypeid, startdate, enddate, caloriesburned, temperature, humidity) values (?,?,?,?,?,?,?,?)";
 			ResultSet rs = conn.createStatement().executeQuery(
 					"SELECT activityid_seq.NEXTVAL FROM DUAL");
 			rs.next();
@@ -50,7 +50,8 @@ public class ActivityServices {
 			ps.setDate(4, new java.sql.Date(activity.getStartDate().getTime()));
 			ps.setDate(5, new java.sql.Date(activity.getEndDate().getTime()));
 			double hours = getHours(activity.getStartDate(), activity.getEndDate());
-			double caloriesBurned = hours * MonitoringHelper.getInstance().getActivityTypes().get(activity.getActivityType().getActivityTypeId()).getCaloriesBurned();
+			MonitoringHelper mh = MonitoringHelper.getInstance(conn);
+			double caloriesBurned = hours * mh.getActivityTypes().get(activity.getActivityType().getActivityTypeId()).getCaloriesBurned();
 			ps.setDouble(6, caloriesBurned);
 			ps.setDouble(7, activity.getTemperature());
 			ps.setDouble(8, activity.getHumidity());

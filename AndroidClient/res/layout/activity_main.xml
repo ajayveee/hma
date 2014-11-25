@@ -9,6 +9,7 @@
     tools:context="com.sample.test.MainActivity" >
 
     <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="fetchUrl"
@@ -18,5 +19,14 @@
         android:id="@+id/txt_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button2"
+        android:layout_marginTop="35dp"
+        android:onClick="setActivity"
+        android:text="Set Activity" />
 
 </RelativeLayout>

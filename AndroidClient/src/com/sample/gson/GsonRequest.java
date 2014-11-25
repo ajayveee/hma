@@ -16,7 +16,7 @@ import com.google.gson.JsonSyntaxException;
 
 public class GsonRequest<T> extends JsonRequest<T> {
 
-	private final Gson mGson;
+	private Gson mGson;
 	private final Class<T> mClassType;
 	private final Map<String, String> mHeaders;
 	private final Response.Listener<T> mListener;
@@ -36,6 +36,11 @@ public class GsonRequest<T> extends JsonRequest<T> {
 		mClassType = classType;
 		mHeaders = headers;
 		mListener = listener;
+	}
+	
+
+	public void setmGson(Gson gson) {
+		 this.mGson = gson;
 	}
 
 	@Override
