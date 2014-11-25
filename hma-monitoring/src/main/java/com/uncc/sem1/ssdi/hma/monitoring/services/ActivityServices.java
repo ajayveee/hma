@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -16,7 +18,9 @@ import org.apache.log4j.Logger;
 import com.uncc.sem1.ssdi.hma.monitoring.db.DBHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Activity;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
+import com.uncc.sem1.ssdi.hma.monitoring.helpers.MonitoringHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.ActivityResponse;
+import com.uncc.sem1.ssdi.hma.monitoring.services.response.ActivityTypeResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.HMAResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.Status;
 
@@ -45,7 +49,9 @@ public class ActivityServices {
 			ps.setInt(3, activity.getActivityType().getActivityTypeId());
 			ps.setDate(4, new java.sql.Date(activity.getStartDate().getTime()));
 			ps.setDate(5, new java.sql.Date(activity.getEndDate().getTime()));
-			ps.setDouble(6, activity.getCaloriesBurned());
+			double hours = getHours(activity.getStartDate(), activity.getEndDate());
+			double caloriesBurned = hours * MonitoringHelper.getInstance().getActivityTypes().get(activity.getActivityType().getActivityTypeId()).getCaloriesBurned();
+			ps.setDouble(6, caloriesBurned);
 			ps.setDouble(7, activity.getTemperature());
 			ps.setDouble(8, activity.getHumidity());
 			ps.executeUpdate();
@@ -77,8 +83,8 @@ public class ActivityServices {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Activity tactivity = new Activity();
-				tactivity.setStartDate(rs.getDate("STARTDATE"));
-				tactivity.setEndDate(rs.getDate("ENDDATE"));
+				tactivity.setStartDate(rs.getTimestamp("STARTDATE"));
+				tactivity.setEndDate(rs.getTimestamp("ENDDATE"));
 				tactivity.setCaloriesBurned(rs.getDouble("CALORIESBURNED"));
 				ActivityType at = new ActivityType();
 				at.setActivityTypeId(rs.getInt("ACTIVITYTYPEID"));
@@ -94,6 +100,22 @@ public class ActivityServices {
 			DBHelper.closeQuietly(conn);
 		}
 		return activityResponse;
-
+	}
+	@POST
+	@Path("/getActivityTypes")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ActivityTypeResponse getActivityTypes(){
+		ActivityTypeResponse activityTypeResponse = new ActivityTypeResponse();
+		activityTypeResponse.setActivityTypes(new ArrayList<ActivityType>(MonitoringHelper.getInstance().getActivityTypes().values()));
+		return activityTypeResponse;
+		
+	}
+	private double getHours(Date startDate, Date endDate){
+		double diff = endDate.getTime() - startDate.getTime();
+		/*double diffSeconds = diff / 1000;         
+		double diffMinutes = diff / (60 * 1000);    */     
+		double diffHours = diff / (60 * 60 * 1000);  
+		return diffHours;
 	}
 }

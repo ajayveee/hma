@@ -39,17 +39,37 @@ public class LoginServices {
 		UserResponse resp = new UserResponse("", Status.SUCCESS);
 		Connection conn = null;
 		try {
-
 			conn = DBHelper.getInstance().getConnection();
 			PreparedStatement ps = conn
-					.prepareStatement("select * from user where username=?");
+					.prepareStatement("select * from user u left join biologicalprofile bp"
+							+ " on u.userid=bp.userid where username=?");
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
+				resp.getUser().setUserid(rs.getInt("USERID"));
+				resp.getUser().setUsername(rs.getString("USERNAME"));
 				resp.getUser().setPassword(rs.getString("PASSWORD"));
 				resp.getUser().setFirstName(rs.getString("FIRSTNAME"));
 				resp.getUser().setLastName(rs.getString("LASTNAME"));
 				resp.getUser().setDob(rs.getDate("BIRTHDAY"));
+				BiologicalProfile bp = new BiologicalProfile();
+				bp.setHeight(rs.getDouble("HEIGHT"));
+				bp.setWeight(rs.getDouble("WEIGHT"));
+				bp.setGender(null);
+				bp.setActiveFrom(rs.getDate("ACTIVEFROM"));
+				bp.setActiveTill(rs.getDate("ACTIVETILL"));
+				//bp.setBasalMetabolicRate(basalMetabolicRate);
+			//	bp.setBloodPressureCategory(bloodPressureCategory);
+				//bp.setBodyFatPercentage(bodyFatPercentage);
+			//	bp.setBodyMassIndex(bodyMassIndex);
+			//	bp.setDiastolicBloodPressure(diastolicBloodPressure);
+				bp.setHip(rs.getDouble("HIP"));
+				bp.setNeck(rs.getDouble("NECK"));
+				//bp.setRestingHeartRate(restingHeartRate);
+				//bp.setSystolicBloodPressure(systolicBloodPressure);
+				bp.setWaist(rs.getDouble("WAIST"));
+				bp.setWrist(rs.getDouble("WRIST"));
+				resp.getUser().setBiologicalProfile(bp);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

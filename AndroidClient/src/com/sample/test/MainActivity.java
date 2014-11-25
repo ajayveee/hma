@@ -29,12 +29,12 @@ import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.User;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.HMAResponse;
+import com.uncc.sem1.ssdi.hma.monitoring.services.response.UserResponse;
 
 public class MainActivity extends ActionBarActivity {
 
 	public static final String EXTRA_MESSAGE = null;
-	private Gson gson = new GsonBuilder().setDateFormat(
-			"EEE, dd MMM yyyy HH:mm:ss zzz").create();;
+	private Gson gson = new GsonBuilder().create();;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	public void fetchUrl(View view) throws JSONException {
+	public void fetchUrlGson(View view) throws JSONException {
 		final TextView txtView = (TextView) findViewById(R.id.txt_message);
 		txtView.setText("hi");
 		String url = "http://10.0.3.2:8080/hma-monitoring/rest/target/set";
@@ -164,7 +164,44 @@ public class MainActivity extends ActionBarActivity {
 		RequestQueue queue = Volley.newRequestQueue(this);
 		queue.add(req);
 	}*/
+	public void fetchUrl(View view) {
+		String url = "http://10.0.3.2:8080/hma-monitoring/rest/login/chan";
+		final TextView txtView = (TextView) findViewById(R.id.txt_message);
+		txtView.setText("hi");
+		GsonRequest<UserResponse> req = 
+				new GsonRequest<UserResponse>(Request.Method.GET, url, UserResponse.class, null, 
+						new Response.Listener<UserResponse>() {
 
+					@Override
+					public void onResponse(UserResponse response) {
+
+						try {
+							txtView.setText("Response: " + response.getResponseMsg() + " :: " + response.getStatus());
+							System.out.println(response);
+						} catch (Throwable e) {
+							System.out.println(e);// TODO: handle exception
+						}
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						txtView.setText("Error: " + error.getMessage());
+
+					}
+				}) {
+			@Override
+			public Map<String, String> getHeaders() throws AuthFailureError {
+				HashMap<String, String> headers = new HashMap<String, String>();
+				headers.put("Content-Type", "application/json; charset=utf-8");
+				// headers.put("User-agent", "My useragent");
+				return headers;
+			}
+		};
+
+		RequestQueue queue = Volley.newRequestQueue(this);
+		queue.add(req);
+	}
 	public void fetchUrlGet(View view) {
 		final TextView txtView = (TextView) findViewById(R.id.txt_message);
 		txtView.setText("hi");
