@@ -1,4 +1,4 @@
-package com.sample.gson;
+package com.uncc.sem1.ssdi.hma.android.json;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;

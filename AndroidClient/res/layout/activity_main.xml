@@ -12,7 +12,7 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="fetchUrl"
+        android:onClick="setTarget"
         android:text="@string/button_send" />
 
     <TextView
@@ -28,5 +28,64 @@
         android:layout_marginTop="35dp"
         android:onClick="setActivity"
         android:text="Set Activity" />
+
+    <EditText
+        android:id="@+id/startDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_alignRight="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="startDate"
+        android:inputType="date" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/startTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/startDate"
+        android:layout_alignBottom="@+id/startDate"
+        android:layout_toRightOf="@+id/startDate"
+        android:ems="10"
+        android:hint="startTime4"
+        android:inputType="time" />
+
+    <EditText
+        android:id="@+id/endTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/startTime"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="endTime"
+        android:inputType="time" />
+
+    <EditText
+        android:id="@+id/endDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/endTime"
+        android:layout_alignBottom="@+id/endTime"
+        android:layout_toLeftOf="@+id/endTime"
+        android:ems="10"
+        android:hint="endDate"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/activityId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button2"
+        android:layout_alignBottom="@+id/button2"
+        android:layout_alignLeft="@+id/startTime"
+        android:layout_marginLeft="37dp"
+        android:ems="10"
+        android:hint="activityId"
+        android:inputType="number" />
 
 </RelativeLayout>

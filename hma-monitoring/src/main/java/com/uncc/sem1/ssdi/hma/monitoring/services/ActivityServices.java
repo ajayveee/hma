@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import com.uncc.sem1.ssdi.hma.monitoring.db.DBHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Activity;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
+import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
 import com.uncc.sem1.ssdi.hma.monitoring.helpers.MonitoringHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.ActivityResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.ActivityTypeResponse;
@@ -39,23 +40,32 @@ public class ActivityServices {
 		try {
 			conn = DBHelper.getInstance().getConnection();
 			String sql = "insert into activities (activityID, userid, activitytypeid, startdate, enddate, caloriesburned, temperature, humidity) values (?,?,?,?,?,?,?,?)";
-			ResultSet rs = conn.createStatement().executeQuery(
-					"SELECT activityid_seq.NEXTVAL FROM DUAL");
+			ResultSet rs = conn.createStatement().executeQuery("SELECT activityid_seq.NEXTVAL FROM DUAL");
 			rs.next();
 			int activityID = rs.getInt(1);
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, activityID);
 			ps.setInt(2, activity.getUser().getUserid());
 			ps.setInt(3, activity.getActivityType().getActivityTypeId());
-			ps.setDate(4, new java.sql.Date(activity.getStartDate().getTime()));
-			ps.setDate(5, new java.sql.Date(activity.getEndDate().getTime()));
+			ps.setTimestamp(4, DBHelper.getSQLTimestamp(activity.getStartDate()));
+			ps.setTimestamp(5, DBHelper.getSQLTimestamp(activity.getEndDate()));
 			double hours = getHours(activity.getStartDate(), activity.getEndDate());
 			MonitoringHelper mh = MonitoringHelper.getInstance(conn);
-			double caloriesBurned = hours * mh.getActivityTypes().get(activity.getActivityType().getActivityTypeId()).getCaloriesBurned();
+			double caloriesBurned = hours
+					* mh.getActivityTypes().get(activity.getActivityType().getActivityTypeId()).getCaloriesBurned();
 			ps.setDouble(6, caloriesBurned);
 			ps.setDouble(7, activity.getTemperature());
 			ps.setDouble(8, activity.getHumidity());
 			ps.executeUpdate();
+			TargetServices targetServices = new TargetServices();
+			Target target = targetServices.getMatchingTarget(activity, conn);
+			if (target != null) {
+				double activityDuration = getHours(activity.getStartDate(), activity.getEndDate());
+				double targetHrsSoFarCompleted = target.getCompletedPercentage() * target.getDurationInHrs() / 100;
+				double totalHrsCompleted = targetHrsSoFarCompleted + activityDuration;
+				int targetCompletedPercentage = (int) ((totalHrsCompleted * 100) / target.getDurationInHrs());
+				targetServices.updateTargetPercentage(target.getTargetId(), targetCompletedPercentage, conn);
+			}
 			DBHelper.commit(conn);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -102,21 +112,26 @@ public class ActivityServices {
 		}
 		return activityResponse;
 	}
+
 	@POST
 	@Path("/getActivityTypes")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ActivityTypeResponse getActivityTypes(){
+	public ActivityTypeResponse getActivityTypes() {
 		ActivityTypeResponse activityTypeResponse = new ActivityTypeResponse();
-		activityTypeResponse.setActivityTypes(new ArrayList<ActivityType>(MonitoringHelper.getInstance().getActivityTypes().values()));
+		activityTypeResponse.setActivityTypes(new ArrayList<ActivityType>(MonitoringHelper.getInstance()
+				.getActivityTypes().values()));
 		return activityTypeResponse;
-		
+
 	}
-	private double getHours(Date startDate, Date endDate){
+
+	private double getHours(Date startDate, Date endDate) {
 		double diff = endDate.getTime() - startDate.getTime();
-		/*double diffSeconds = diff / 1000;         
-		double diffMinutes = diff / (60 * 1000);    */     
-		double diffHours = diff / (60 * 60 * 1000);  
+		/*
+		 * double diffSeconds = diff / 1000; double diffMinutes = diff / (60 *
+		 * 1000);
+		 */
+		double diffHours = diff / (60 * 60 * 1000);
 		return diffHours;
 	}
 }

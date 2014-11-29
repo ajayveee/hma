@@ -130,17 +130,17 @@ VALUES
 ;
 commit;
 
-DROP TABLE IF EXISTS Targets;
+DROP TABLE IF EXISTS Target;
 
-CREATE TABLE Targets (
+CREATE TABLE Target (
 targetid number,
 	Userid VARCHAR(50) NOT NULL,
 	Calories number NOT NULL,
 	StartDate DATETIME NOT NULL,
 	EndDate DATETIME NOT NULL,
 	ActivityTypeId number NOT NULL,
-	CurrentProgress number,
-
+	CurrentProgress number default 0,
+	duration number,
 	PRIMARY KEY (targetid),
 	FOREIGN KEY (userid) REFERENCES User (Userid),
 FOREIGN KEY (activitytypeid) REFERENCES knownactivities(activitytypeid)

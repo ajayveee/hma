@@ -10,6 +10,7 @@ public class Target {
 	private Date startDate;
 	private Date endDate;
 	private ActivityType activityType;
+	private double durationInHrs;
 	private int completedPercentage;
 	private double calories;
 	private User user;
@@ -68,6 +69,14 @@ public class Target {
 
 	public User getUser() {
 		return user;
+	}
+
+	public double getDurationInHrs() {
+		return durationInHrs;
+	}
+
+	public void setDurationInHrs(double durationInHrs) {
+		this.durationInHrs = durationInHrs;
 	}
 
 }

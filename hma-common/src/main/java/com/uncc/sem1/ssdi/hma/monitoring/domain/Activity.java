@@ -16,6 +16,7 @@ public class Activity {
 	private double temperature;
 	private double humidity;
 	private ActivityType activityType;
+	private Target target;
 
 	public User getUser() {
 		return user;
@@ -87,5 +88,13 @@ public class Activity {
 
 	public void setActivityType(ActivityType activityType) {
 		this.activityType = activityType;
+	}
+
+	public Target getTarget() {
+		return target;
+	}
+
+	public void setTarget(Target target) {
+		this.target = target;
 	}
 }

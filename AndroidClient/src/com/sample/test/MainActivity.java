@@ -1,10 +1,13 @@
 package com.sample.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +17,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -25,8 +29,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sample.gson.GsonDateDeSerializer;
 import com.sample.gson.GsonRequest;
+import com.uncc.sem1.ssdi.hma.android.json.GsonDateDeSerializer;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Activity;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
@@ -76,11 +80,24 @@ public class MainActivity extends ActionBarActivity {
 		String url = "http://10.0.3.2:8080/hma-monitoring/rest/activity/set";
 		// txtView.setText("hi");
 		Activity activity = new Activity();
-		activity.setActivityType(new ActivityType(new Random().nextInt(46) + 1));
-		Calendar calendar = Calendar.getInstance(); // this would default to now
-		calendar.add(Calendar.DAY_OF_MONTH, -5);
-		activity.setStartDate(calendar.getTime());
-		activity.setEndDate(new Date());
+		int activityId = Integer.parseInt(((EditText)findViewById(R.id.activityId)).getText().toString());
+		activity.setActivityType(new ActivityType(activityId));
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyykk:mm");
+		sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		//sdf.parse("");
+		String startDate = ((EditText)findViewById(R.id.startDate)).getText().toString();
+		String startTime = ((EditText)findViewById(R.id.startTime)).getText().toString();
+		String endDate = ((EditText)findViewById(R.id.endDate)).getText().toString();
+		String endTime = ((EditText)findViewById(R.id.endTime)).getText().toString();
+//		calendar.add(Calendar.HOUR_OF_DAY, 10);
+		try {
+			activity.setStartDate(sdf.parse(startDate + startTime));
+			activity.setEndDate(sdf.parse(endDate + endTime));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		activity.setUser(new User(1));
 		Gson gson = new GsonBuilder().setDateFormat(
 				"EEE, dd MMM yyyy HH:mm:ss zzz").create();
@@ -124,20 +141,35 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
-	public void fetchUrl(View view) throws JSONException {
+	public void setTarget(View view) throws JSONException {
 		final TextView txtView = (TextView) findViewById(R.id.txt_message);
 		txtView.setText("hi");
 		String url = "http://10.0.3.2:8080/hma-monitoring/rest/target/set";
 
 		Target target = new Target();
 		target.setCompletedPercentage(10);
-		Calendar calendar = Calendar.getInstance(); // this would default to now
-		calendar.add(Calendar.DAY_OF_MONTH, -5);
-		target.setStartDate(calendar.getTime());
-		target.setEndDate(new Date());
-		target.setActivityType(new ActivityType(1));
+//		Calendar calendar = Calendar.getInstance(); // this would default to now
+//		calendar.add(Calendar.DAY_OF_MONTH, -5);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyykk:mm");
+		sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		//sdf.parse("");
+		String startDate = ((EditText)findViewById(R.id.startDate)).getText().toString();
+		String startTime = ((EditText)findViewById(R.id.startTime)).getText().toString();
+		String endDate = ((EditText)findViewById(R.id.endDate)).getText().toString();
+		String endTime = ((EditText)findViewById(R.id.endTime)).getText().toString();
+//		calendar.add(Calendar.HOUR_OF_DAY, 10);
+		try {
+			target.setStartDate(sdf.parse(startDate + startTime));
+			target.setEndDate(sdf.parse(endDate + endTime));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		int activityId = Integer.parseInt(((EditText)findViewById(R.id.activityId)).getText().toString());
+		target.setActivityType(new ActivityType(activityId));
 		target.setUser(new User(1));
 		target.setCalories(20);
+		target.setDurationInHrs(2);
 
 		Gson gson = new GsonBuilder().setDateFormat(
 				"EEE, dd MMM yyyy HH:mm:ss zzz").create();

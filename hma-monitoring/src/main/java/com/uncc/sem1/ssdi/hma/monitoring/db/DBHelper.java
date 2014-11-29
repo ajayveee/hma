@@ -56,6 +56,10 @@ public class DBHelper {
 		return new java.sql.Date(date.getTime());
 	}
 
+	public static java.sql.Timestamp getSQLTimestamp(Date date) {
+		return new java.sql.Timestamp(date.getTime());
+	}
+
 	public static void rollbackQuitely(Connection connection) {
 		try {
 			if (connection != null) {
