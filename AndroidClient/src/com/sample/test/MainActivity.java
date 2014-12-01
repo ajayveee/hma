@@ -31,6 +31,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sample.gson.GsonRequest;
 import com.uncc.sem1.ssdi.hma.android.json.GsonDateDeSerializer;
+import com.uncc.sem1.ssdi.hma.android.network.NetworkRequestHelper;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Activity;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
@@ -136,9 +137,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		};
 		req.setmGson(this.gson);
-		RequestQueue queue = Volley.newRequestQueue(this);
-		queue.add(req);
-
+		NetworkRequestHelper.getInstance(this.getApplicationContext()).addToRequestQueue(req);
 	}
 
 	public void setTarget(View view) throws JSONException {
@@ -208,8 +207,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		};
 		req.setmGson(this.gson);
-		RequestQueue queue = Volley.newRequestQueue(this);
-		queue.add(req);
+		NetworkRequestHelper.getInstance(this.getApplicationContext()).addToRequestQueue(req);
 
 	}
 
