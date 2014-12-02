@@ -2,20 +2,31 @@
 
 body {
 	margin: 0px auto;
-	padding: 0px 10px;
+	padding: 0px 0px;
+	font-family: Bitter,Georgia,serif;
 }
 
 .activityTable {
 	
 }
-
+.topSection{
+	margin: 5px auto; 
+	background-image: url(../img/bg.jpg);
+}
+.topOptions{
+	background:none repeat scroll 0% 0% rgba(255, 255, 255, 0.5);
+	padding: 0px 10px;
+	
+}
 .activityTable td {
 	text-align: right
 }
 
 .topbar {
-	background-color: #F1F1F1;
+	/* background-color: #F1F1F1; */
 	padding: 15px 5px;
+	color: #FFF;
+	background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.5)
 }
 
 #ui-datepicker-div {

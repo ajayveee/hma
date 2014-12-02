@@ -14,3 +14,7 @@ $(document).ready(function() {
 	}
 	
 });
+function logOff(){
+	$.removeCookie("userDetails");
+	window.location.replace("Login.html");
+}

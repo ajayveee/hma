@@ -62,7 +62,7 @@ function activitySuccess(data) {
 						+ data.activities[activity].caloriesBurned
 						+ "</td></tr>");
 	}
-	$('#activityTable').DataTable({
+	$('#activityTable').show().DataTable({
 		"autoWidth" : true
 	}).columns.adjust().draw();
 }

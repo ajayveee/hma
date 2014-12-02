@@ -16,33 +16,46 @@
 <script type="text/javascript" src="js/Activity.js"></script>
 </head>
 <body>
-	<div class="topbar">
-		<span style="font-weight: bold;">Welcome </span><span id="usr"></span>
-	</div>
 
-	<div id="resp"></div>
-	<div style="margin: 0px auto; width: 75%;">
-		<table style="margin: 5px 0px;">
-			<tr>
-				<td>Start Date: <input type="text" id="sdatepicker"></td>
-				<td>End Date: <input type="text" id="edatepicker"></td>
-			</tr>
-		</table>
-		<button id="actBtn" onclick="fetchActivities();" disabled="disabled">Fetch
-			Activities</button>
-		<br />
-		<table id="activityTable" class="activityTable">
-			<thead>
-				<tr>
-					<th>Activity</th>
-					<th>Start Date</th>
-					<th>End Date</th>
-					<th>Calories Burned</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+	<div>
+		<div class="topSection">
+			<nav class="topbar">
+				<span style="font-weight: bold;">Welcome </span><span id="usr"></span>
+				<div style="float: right; color: white; padding: 3px 15px;">
+				<a href="Activity.html" >Activities</a>&nbsp;
+				<a href="Target.html" >Targets</a>
+				<a href="javascript:logOff();" >Log Off</a>
+				</div>
+			</nav>
+			<div class="topOptions" style="width: 75%; margin: 0px auto; padding-top: 10px;">
+				<div style="font-size: medium; font-weight:bold; color: #04151D;">ACTIVITIES</div>
+				<div id="resp"></div>
+				<table style="margin: 5px 0px;">
+					<tr>
+						<td>Start Date: <input type="text" id="sdatepicker"></td>
+						<td>End Date: <input type="text" id="edatepicker"></td>
+					</tr>
+				</table>
+				<button id="actBtn" onclick="fetchActivities();" disabled="disabled">Fetch
+					Activities</button>
+				<br />
+			</div>
+		</div>
+		<section style="margin: 0px auto; width: 75%;">
+			<table id="activityTable" class="activityTable"
+				style="display: none;">
+				<thead>
+					<tr>
+						<th>Activity</th>
+						<th>Start Date</th>
+						<th>End Date</th>
+						<th>Calories Burned</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</section>
 	</div>
 </body>
 </html>

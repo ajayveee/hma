@@ -62,7 +62,7 @@ function targetSuccess(data) {
 						+ data.targets[target].completedPercentage
 						+ "%</td></tr>");
 	}
-	$('#targetTable').DataTable({
+	$('#targetTable').show().DataTable({
 		"autoWidth" : true
 	}).columns.adjust().draw();
 }
