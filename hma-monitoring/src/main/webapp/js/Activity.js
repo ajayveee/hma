@@ -1,12 +1,13 @@
 /**
  * 
  */
-var userDetails;
 $(document).ready(function() {
 
 	$("#sdatepicker").datepicker();
 	$("#edatepicker").datepicker();
-	fetchUserDetails(getQueryVariable("user"));
+	$("#usr").text(userDetails.firstName + " " + userDetails.lastName);
+	  $("#actBtn").prop("disabled",false);
+	//fetchUserDetails(getQueryVariable("user"));
 });
 function fetchUserDetails(username) {
 	$.ajax({
@@ -22,7 +23,7 @@ function userSuccess(data) {
 	userDetails = data.user;
 	$("#usr").text(userDetails.firstName + " " + userDetails.lastName);
 	// fetchActivities(userDetails);
-	  $("#actBtn").prop("disabled",false);
+	
 }
 function fetchActivities() {
 	var activity = new Object();

@@ -2,11 +2,9 @@ package com.sample.test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.TimeZone;
 
 import org.json.JSONException;
@@ -37,6 +35,7 @@ import com.uncc.sem1.ssdi.hma.monitoring.domain.ActivityType;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.Target;
 import com.uncc.sem1.ssdi.hma.monitoring.domain.User;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.ActivityResponse;
+import com.uncc.sem1.ssdi.hma.monitoring.services.response.ActivityTypeResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.HMAResponse;
 import com.uncc.sem1.ssdi.hma.monitoring.services.response.UserResponse;
 
@@ -81,16 +80,22 @@ public class MainActivity extends ActionBarActivity {
 		String url = "http://10.0.3.2:8080/hma-monitoring/rest/activity/set";
 		// txtView.setText("hi");
 		Activity activity = new Activity();
-		int activityId = Integer.parseInt(((EditText)findViewById(R.id.activityId)).getText().toString());
+		int activityId = Integer
+				.parseInt(((EditText) findViewById(R.id.activityId)).getText()
+						.toString());
 		activity.setActivityType(new ActivityType(activityId));
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyykk:mm");
 		sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-		//sdf.parse("");
-		String startDate = ((EditText)findViewById(R.id.startDate)).getText().toString();
-		String startTime = ((EditText)findViewById(R.id.startTime)).getText().toString();
-		String endDate = ((EditText)findViewById(R.id.endDate)).getText().toString();
-		String endTime = ((EditText)findViewById(R.id.endTime)).getText().toString();
-//		calendar.add(Calendar.HOUR_OF_DAY, 10);
+		// sdf.parse("");
+		String startDate = ((EditText) findViewById(R.id.startDate)).getText()
+				.toString();
+		String startTime = ((EditText) findViewById(R.id.startTime)).getText()
+				.toString();
+		String endDate = ((EditText) findViewById(R.id.endDate)).getText()
+				.toString();
+		String endTime = ((EditText) findViewById(R.id.endTime)).getText()
+				.toString();
+		// calendar.add(Calendar.HOUR_OF_DAY, 10);
 		try {
 			activity.setStartDate(sdf.parse(startDate + startTime));
 			activity.setEndDate(sdf.parse(endDate + endTime));
@@ -98,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		activity.setUser(new User(1));
 		Gson gson = new GsonBuilder().setDateFormat(
 				"EEE, dd MMM yyyy HH:mm:ss zzz").create();
@@ -137,7 +142,8 @@ public class MainActivity extends ActionBarActivity {
 			}
 		};
 		req.setmGson(this.gson);
-		NetworkRequestHelper.getInstance(this.getApplicationContext()).addToRequestQueue(req);
+		NetworkRequestHelper.getInstance(this.getApplicationContext())
+				.addToRequestQueue(req);
 	}
 
 	public void setTarget(View view) throws JSONException {
@@ -147,16 +153,21 @@ public class MainActivity extends ActionBarActivity {
 
 		Target target = new Target();
 		target.setCompletedPercentage(10);
-//		Calendar calendar = Calendar.getInstance(); // this would default to now
-//		calendar.add(Calendar.DAY_OF_MONTH, -5);
+		// Calendar calendar = Calendar.getInstance(); // this would default to
+		// now
+		// calendar.add(Calendar.DAY_OF_MONTH, -5);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyykk:mm");
 		sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-		//sdf.parse("");
-		String startDate = ((EditText)findViewById(R.id.startDate)).getText().toString();
-		String startTime = ((EditText)findViewById(R.id.startTime)).getText().toString();
-		String endDate = ((EditText)findViewById(R.id.endDate)).getText().toString();
-		String endTime = ((EditText)findViewById(R.id.endTime)).getText().toString();
-//		calendar.add(Calendar.HOUR_OF_DAY, 10);
+		// sdf.parse("");
+		String startDate = ((EditText) findViewById(R.id.startDate)).getText()
+				.toString();
+		String startTime = ((EditText) findViewById(R.id.startTime)).getText()
+				.toString();
+		String endDate = ((EditText) findViewById(R.id.endDate)).getText()
+				.toString();
+		String endTime = ((EditText) findViewById(R.id.endTime)).getText()
+				.toString();
+		// calendar.add(Calendar.HOUR_OF_DAY, 10);
 		try {
 			target.setStartDate(sdf.parse(startDate + startTime));
 			target.setEndDate(sdf.parse(endDate + endTime));
@@ -164,7 +175,9 @@ public class MainActivity extends ActionBarActivity {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		int activityId = Integer.parseInt(((EditText)findViewById(R.id.activityId)).getText().toString());
+		int activityId = Integer
+				.parseInt(((EditText) findViewById(R.id.activityId)).getText()
+						.toString());
 		target.setActivityType(new ActivityType(activityId));
 		target.setUser(new User(1));
 		target.setCalories(20);
@@ -207,7 +220,8 @@ public class MainActivity extends ActionBarActivity {
 			}
 		};
 		req.setmGson(this.gson);
-		NetworkRequestHelper.getInstance(this.getApplicationContext()).addToRequestQueue(req);
+		NetworkRequestHelper.getInstance(this.getApplicationContext())
+				.addToRequestQueue(req);
 
 	}
 
@@ -320,5 +334,48 @@ public class MainActivity extends ActionBarActivity {
 		RequestQueue queue = Volley.newRequestQueue(this);
 		queue.add(jsObjRequest);
 
+	}
+
+	public void getKnownActivities() {
+		String url = "http://10.0.3.2:8080/hma-monitoring/rest/activity/getActivityTypes";
+		final TextView txtView = (TextView) findViewById(R.id.txt_message);
+
+		Gson gson = new GsonBuilder().setDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss zzz").create();
+		GsonRequest<ActivityTypeResponse> req = new GsonRequest<ActivityTypeResponse>(
+				Request.Method.POST, url, ActivityTypeResponse.class, null,
+				new Response.Listener<ActivityTypeResponse>() {
+
+					@Override
+					public void onResponse(ActivityTypeResponse response) {
+
+						try {
+							txtView.setText("Response: "
+									+ response.getResponseMsg() + " :: "
+									+ response.getStatus());
+							System.out.println(response);
+						} catch (Throwable e) {
+							System.out.println(e);// TODO: handle exception
+						}
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						txtView.setText("Error: " + error.getMessage());
+
+					}
+				}) {
+			@Override
+			public Map<String, String> getHeaders() throws AuthFailureError {
+				HashMap<String, String> headers = new HashMap<String, String>();
+				headers.put("Content-Type", "application/json; charset=utf-8");
+				// headers.put("User-agent", "My useragent");
+				return headers;
+			}
+		};
+		req.setmGson(this.gson);
+		NetworkRequestHelper.getInstance(this.getApplicationContext())
+				.addToRequestQueue(req);
 	}
 }

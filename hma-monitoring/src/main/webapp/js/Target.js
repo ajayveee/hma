@@ -1,12 +1,13 @@
 /**
  * 
  */
-var userDetails;
 $(document).ready(function() {
 
 	$("#sdatepicker").datepicker();
 	$("#edatepicker").datepicker();
-	fetchUserDetails(getQueryVariable("user"));
+	$("#usr").text(userDetails.firstName + " " + userDetails.lastName);
+	$("#actBtn").prop("disabled", false);
+	//fetchUserDetails(getQueryVariable("user"));
 });
 function fetchUserDetails(username) {
 	$.ajax({
@@ -22,21 +23,21 @@ function userSuccess(data) {
 	userDetails = data.user;
 	$("#usr").text(userDetails.firstName + " " + userDetails.lastName);
 	// fetchActivities(userDetails);
-	  $("#actBtn").prop("disabled",false);
+	 
 }
 function fetchTargets() {
-	var target = new Object();
-	target.user = {
-		"username" : userDetails.username
-	};
-	target.startDate = $("#sdatepicker").datepicker("getDate");//new Date(2014, 10, 15, 0, 0, 0, 0);
-	target.endDate = $("#edatepicker").datepicker("getDate");//new Date(2014, 10, 25, 0, 0, 0, 0);
+//	var target = new Object();
+//	target.user = {
+//		"username" : userDetails.username
+//	};
+//	target.startDate = $("#sdatepicker").datepicker("getDate");//new Date(2014, 10, 15, 0, 0, 0, 0);
+//	target.endDate = $("#edatepicker").datepicker("getDate");//new Date(2014, 10, 25, 0, 0, 0, 0);
 	$.ajax({
 		type : "GET",
 		dataType : "json",
 		contentType : "application/json; charset=utf-8",
-		url : "http://localhost:8080/hma-monitoring/rest/target/get",
-		data : JSON.stringify(target)
+		url : "http://localhost:8080/hma-monitoring/rest/target/"+userDetails.username,
+		//data : JSON.stringify(target)
 	// success : activitySuccess(data)
 	}).done(targetSuccess);
 }
@@ -52,14 +53,14 @@ function targetSuccess(data) {
 	}
 	$('#targetTable').dataTable().fnDestroy();
 	$('#targetTable > tbody').html("");
-	for (target in data.activities) {
+	for (target in data.targets) {
 		$('#targetTable').append(
-				"<tr><td>" + data.activities[target].activityType.target
-						+ "</td><td>" + new Date(data.activities[target].startDate).toLocaleTimeString("en-US", dateOptions)
-						+ "</td><td>" + new Date(data.activities[target].endDate).toLocaleTimeString("en-US", dateOptions)
+				"<tr><td>" + data.targets[target].activityType.activity
+						+ "</td><td>" + new Date(data.targets[target].startDate).toLocaleTimeString("en-US", dateOptions)
+						+ "</td><td>" + new Date(data.targets[target].endDate).toLocaleTimeString("en-US", dateOptions)
 						+ "</td><td>"
-						+ data.activities[target].caloriesBurned
-						+ "</td></tr>");
+						+ data.targets[target].completedPercentage
+						+ "%</td></tr>");
 	}
 	$('#targetTable').DataTable({
 		"autoWidth" : true
